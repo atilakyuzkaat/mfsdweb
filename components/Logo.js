@@ -1,5 +1,4 @@
 // Geçici logomark: iki iç içe daire (anne ve bebek) + kelime işareti.
-// Kurumsal logo hazır olduğunda public/ klasörüne koyup burada <img> ile değiştirin.
 export default function Logo({ light = false }) {
   return (
     <span className={light ? "logo logo-light" : "logo"}>

@@ -1,5 +1,18 @@
 import { siteUrl } from "@/lib/site";
+import { routes } from "@/lib/i18n";
+
 export default function sitemap() {
-  const paths = ["", "/hizmetler", "/projeler", "/projeler/partoai", "/ekip", "/hakkimizda", "/iletisim", "/kvkk", "/cerez-politikasi"];
-  return paths.map((p) => ({ url: siteUrl + p, lastModified: new Date(), changeFrequency: "monthly", priority: p === "" ? 1 : 0.7 }));
+  const out = [];
+  for (const [key, r] of Object.entries(routes)) {
+    for (const lang of ["tr", "en"]) {
+      out.push({
+        url: siteUrl + (r[lang] === "/" ? "" : r[lang]),
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: key === "home" ? (lang === "tr" ? 1 : 0.9) : 0.7,
+        alternates: { languages: { "tr-TR": siteUrl + (r.tr === "/" ? "" : r.tr), en: siteUrl + r.en } },
+      });
+    }
+  }
+  return out;
 }

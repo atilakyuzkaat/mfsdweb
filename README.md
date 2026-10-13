@@ -2,16 +2,34 @@
 
 Maternal Fetal Sağlık ve Danışmanlık Hizmetleri Tic. Ltd. Şti. (MFSD) için Next.js 15 (App Router) sitesi.
 
-## Sayfalar
-- `/` ana sayfa · `/hizmetler` · `/projeler` · `/projeler/partoai` · `/ekip` · `/hakkimizda` · `/iletisim`
-- `/kvkk` (aydınlatma metni, taslak) · `/cerez-politikasi`
+## Sayfalar (TR / EN)
+| Türkçe | English |
+|---|---|
+| `/` | `/en` |
+| `/hizmetler` | `/en/services` |
+| `/projeler` | `/en/projects` |
+| `/projeler/partoai` | `/en/projects/partoai` |
+| `/ekip` | `/en/team` |
+| `/hakkimizda` | `/en/about` |
+| `/iletisim` | `/en/contact` |
+| `/kvkk` | `/en/privacy` |
+| `/cerez-politikasi` | `/en/cookies` |
+
+Üst menüdeki TR/EN düğmesi aynı sayfanın diğer dildeki karşılığına geçer. Her sayfada `hreflang` etiketleri ve iki dilli sitemap bulunur.
 - `/api/contact` iletişim formu, `/api/subscribe` e-bülten kaydı
 - `sitemap.xml`, `robots.txt`, Organization JSON-LD
 
 ## İçerik nerede değişir
+- **Tüm metinler:** `lib/content/tr.js` ve `lib/content/en.js` (aynı anahtarlar; birini değiştirince diğerini de güncelleyin)
+- KVKK ve çerez metinleri: `components/views/Privacy.js`, `components/views/Cookies.js`
 - Şirket bilgileri (unvan, MERSIS, adres, telefon, e-posta): `lib/site.js`
-- Ekip ve özgeçmişler: `lib/team.js` (fotoğrafları `public/team/` içine koyup `photo` alanını doldurun)
-- Hizmetler: `lib/services.js` · PartoAI modülleri: `components/PartoShowcase.js`
+- Kişi adları ve fotoğraflar: `lib/team.js` (fotoğrafları `public/team/` içine koyup `photo` alanını doldurun)
+- Sayfa adresleri ve dil eşleşmeleri: `lib/i18n.js`
+
+## Yapı
+- `app/(tr)/…` Türkçe sayfalar, `app/(en)/en/…` İngilizce sayfalar; her grup kendi `<html lang>` kök düzenine sahip.
+- Sayfa dosyaları incedir; içerik `components/views/*` içinde, `lang` parametresiyle iki dilde aynı bileşenden üretilir.
+- Duyarlı kırılımlar: telefon < 640px, tablet 640–1080px (açılır menü), masaüstü > 1080px.
 
 ## Yerel çalıştırma
 ```bash
