@@ -3,6 +3,7 @@ import CtgTrace from "@/components/CtgTrace";
 import PartoShowcase from "@/components/PartoShowcase";
 import { getDict, routes } from "@/lib/i18n";
 import { people } from "@/lib/team";
+import Portrait from "@/components/Portrait";
 
 export default function Home({ lang }) {
   const t = getDict(lang);
@@ -53,9 +54,7 @@ export default function Home({ lang }) {
 
       <section className="section">
         <div className="wrap person">
-          <div className="portrait" aria-hidden={!r.photo}>
-            {r.photo ? <img src={r.photo} alt={r.name[lang]} /> : r.initials}
-          </div>
+          <Portrait person={r} lang={lang} />
           <div className="measure">
             <h2>{r.name[lang]}</h2>
             <p className="role">{t.team.resul.role}</p>

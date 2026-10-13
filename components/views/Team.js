@@ -2,14 +2,8 @@ import Link from "next/link";
 import PageHead from "@/components/PageHead";
 import { getDict, routes } from "@/lib/i18n";
 import { people } from "@/lib/team";
+import Portrait from "@/components/Portrait";
 
-function Portrait({ p, lang }) {
-  return (
-    <div className="portrait" aria-hidden={!p.photo}>
-      {p.photo ? <img src={p.photo} alt={p.name[lang]} /> : p.initials}
-    </div>
-  );
-}
 
 export default function Team({ lang }) {
   const t = getDict(lang);
@@ -21,7 +15,7 @@ export default function Team({ lang }) {
 
       <section className="section" id={resul.slug}>
         <div className="wrap person">
-          <Portrait p={resul} lang={lang} />
+          <Portrait person={resul} lang={lang} />
           <div>
             <h2>{resul.name[lang]}</h2>
             <p className="role">{tm.resul.role}</p>
@@ -30,7 +24,7 @@ export default function Team({ lang }) {
               <div>
                 <h3>{tm.careerTitle}</h3>
                 <ol className="timeline">
-                  {tm.resul.timeline.map(([y, x]) => <li key={y + x}><time>{y}</time> {x}</li>)}
+                  {tm.resul.timeline.map(([y, x]) => <li key={y + x}><time>{y}</time><span>{x}</span></li>)}
                 </ol>
               </div>
               <div>
@@ -46,7 +40,7 @@ export default function Team({ lang }) {
 
       <section className="section section-white" id={atil.slug}>
         <div className="wrap person">
-          <Portrait p={atil} lang={lang} />
+          <Portrait person={atil} lang={lang} />
           <div className="measure">
             <h2>{atil.name[lang]}</h2>
             <p className="role">{tm.atil.role}</p>
