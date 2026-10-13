@@ -1,54 +1,66 @@
 import Link from "next/link";
 import PageHead from "@/components/PageHead";
+import Portrait from "@/components/Portrait";
 import { getDict, routes } from "@/lib/i18n";
 import { people } from "@/lib/team";
-import Portrait from "@/components/Portrait";
 
+// Bir kişinin özgeçmiş bölümü. Boş listeler (ör. henüz girilmemiş kariyer) sayfada gösterilmez.
+function Person({ person, cv, tm, lang, white }) {
+  const has = (a) => Array.isArray(a) && a.length > 0;
+  const left = has(cv.timeline);
+  const right = has(cv.focus) || has(cv.projects) || has(cv.memberships);
+  return (
+    <section className={white ? "section section-white" : "section"} id={person.slug}>
+      <div className="wrap person">
+        <Portrait person={person} lang={lang} />
+        <div>
+          <h2>{person.name[lang]}</h2>
+          <p className="role">{cv.role}</p>
+          <p className="measure">{cv.summary}</p>
+          {(left || right) && (
+            <div className={left && right ? "cols-2 person-details" : "person-details measure"}>
+              {left && (
+                <div>
+                  <h3>{tm.careerTitle}</h3>
+                  <ol className="timeline">
+                    {cv.timeline.map(([y, x]) => <li key={y + x}><time>{y}</time><span>{x}</span></li>)}
+                  </ol>
+                </div>
+              )}
+              {right && (
+                <div>
+                  {has(cv.focus) && (<>
+                    <h3>{cv.focusTitle || tm.focusTitle}</h3>
+                    <ul>{cv.focus.map((f) => <li key={f}>{f}</li>)}</ul>
+                  </>)}
+                  {has(cv.projects) && (<>
+                    <h3 className="mt">{tm.projectsTitle}</h3>
+                    <dl className="cv-projects">
+                      {cv.projects.map(([n, d]) => (<div key={n}><dt>{n}</dt><dd>{d}</dd></div>))}
+                    </dl>
+                  </>)}
+                  {has(cv.memberships) && (<>
+                    <h3 className="mt">{tm.membershipsTitle}</h3>
+                    <ul>{cv.memberships.map((f) => <li key={f}>{f}</li>)}</ul>
+                  </>)}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Team({ lang }) {
   const t = getDict(lang);
   const tm = t.team;
-  const { resul, atil } = people;
   return (
     <>
       <PageHead lang={lang} t={t} title={tm.title} crumb={tm.title} lead={tm.lead} />
-
-      <section className="section" id={resul.slug}>
-        <div className="wrap person">
-          <Portrait person={resul} lang={lang} />
-          <div>
-            <h2>{resul.name[lang]}</h2>
-            <p className="role">{tm.resul.role}</p>
-            <p className="measure">{tm.resul.summary}</p>
-            <div className="cols-2 person-details">
-              <div>
-                <h3>{tm.careerTitle}</h3>
-                <ol className="timeline">
-                  {tm.resul.timeline.map(([y, x]) => <li key={y + x}><time>{y}</time><span>{x}</span></li>)}
-                </ol>
-              </div>
-              <div>
-                <h3>{tm.focusTitle}</h3>
-                <ul>{tm.resul.focus.map((f) => <li key={f}>{f}</li>)}</ul>
-                <h3 className="mt">{tm.membershipsTitle}</h3>
-                <ul>{tm.resul.memberships.map((f) => <li key={f}>{f}</li>)}</ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section-white" id={atil.slug}>
-        <div className="wrap person">
-          <Portrait person={atil} lang={lang} />
-          <div className="measure">
-            <h2>{atil.name[lang]}</h2>
-            <p className="role">{tm.atil.role}</p>
-            <p>{tm.atil.summary}</p>
-          </div>
-        </div>
-      </section>
-
+      <Person person={people.resul} cv={tm.resul} tm={tm} lang={lang} />
+      <Person person={people.atil} cv={tm.atil} tm={tm} lang={lang} white />
       <section className="section">
         <div className="wrap cta-band">
           <div>

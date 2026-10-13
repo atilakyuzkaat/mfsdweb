@@ -338,3 +338,7 @@ a, dd, p, li { overflow-wrap: break-word; }
   body { background: #fff; }
   .parto { background: #fff; color: #000; }
 }
+
+.cv-projects { margin: 0; display: grid; gap: 14px; }
+.cv-projects dt { font-weight: 600; color: var(--plum-deep); }
+.cv-projects dd { margin: 2px 0 0; color: var(--muted); }
